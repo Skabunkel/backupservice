@@ -12,32 +12,34 @@ else:
 
 from modules import logger as log
 from modules import processing as proc
+
 import configparser
+import systemd.daemon as deamon
 
 """ Define signal handlers for SIGTERM, and SIGHUP(reload) """
 def sigterm_handler(_signo, _stack):
-  systemd.daemon.notify('STOPPING=1')
+  deamon.notify('STOPPING=1')
   proc.stop_processing()
   sys.exit(0)
 
 
 def reload_handler(_signo, _stack):
-  systemd.daemon.notify('RELOADING=1')
+  deamon.notify('RELOADING=1')
 
   proc.stop_processing()
   # reload ini file, then task.yml file.
   proc.start_processing()
 
-  systemd.daemon.notify('READY=1')
+  deamon.notify('READY=1')
 
 if __name__ == '__main__':
-  import systemd.daemon
+  
   
   #register termination, and reload signals
   signal.signal(signal.SIGTERM, sigterm_handler)
   signal.signal(signal.SIGHUP, reload_handler) # SIGHUP is used as a reload signal for many deamons.
 
-  systemd.daemon.notify('READY=1')
+  deamon.notify('READY=1')
   log = log.get_journal_logger("backup")
   log.info("HELLO")
 

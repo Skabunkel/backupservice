@@ -2,11 +2,12 @@ import logging
 import systemd.journal as journ
 
 """ Creates a scoped logger with a systemd journal logger handler """
-@logger.journalctl_logger
-def get_journal_logger(scope, logLevel):
+
+def get_journal_logger(scope):
   logger = logging.getLogger(scope)
-  logger.addHandler(journ.JournaldLogHandler())
-  log.setLevel(logLevel)
+  logger.addHandler(journ.JournalHandler())
+  logger.setLevel(logging.INFO)
+  return logger
 
 
 print("imported logging")
