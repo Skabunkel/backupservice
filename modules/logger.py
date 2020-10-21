@@ -9,5 +9,3 @@ def get_journal_logger(scope):
   logger.setLevel(logging.INFO)
   return logger
 
-
-print("imported logging")

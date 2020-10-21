@@ -1,6 +1,26 @@
 # backupservice
 A backup service that monitor and syncs directories/files to diffrent targets.
 
+## Requirements
+
+* Python 3
+
+## Setup
+
+### pipenv
+If you are using ´pipenv´ just run this command in the projects folder.
+```
+pipenv install
+```
+
+### using regular pip or other python helper
+You can just use pip to install the requirements. 
+```
+pip3 install -r requirements.txt
+```
+
+## Idea.
+
 This services will according to some schedule sync files to some backup solution,
  based on some experience and ~~some level of auti~~ feeling i want something like the following.
 
