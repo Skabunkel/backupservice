@@ -30,18 +30,20 @@ Currently it feels like yaml will be a good choice because we want to use ansibl
 *config.yml*
 ```yaml
 
-url: backup.int.studentnatet.se
-schedule: */30 * * * *
+url: 'backup.lan' # if its not defined it will default to localhost
+user: 'backup' # if its not defined it will default to current user using the $USER enviroment variable
+schedule: '*/30 * * * *'
 jobs:
- - name: Syncing system configs # Syncs configs to default location.
-   schedule: 0 */24 * * *
+ - name: 'Syncing system configs' # Syncs configs to default location.
+   schedule: '0 */24 * * *'
    targets:
-    - "/etc/nginx/conf.d"
-    - "/srv/magic"
+    - '/etc/nginx/conf.d'
+    - '/srv/magic'
  
- - name: Sync cheese stash # Syncs the cheese stash to a diffrent host using the default schedule.
-   url: "cheese.studentnatet.se"
+ - name: 'Sync cheese stash' # Syncs the cheese stash to a diffrent host using the default schedule.
+   user: 'wizard'
+   url: 'cheese.lan'
    targets:
-    - "/home/wizard/cheese"
+    - '/home/wizard/cheese'
 
 ```

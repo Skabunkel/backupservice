@@ -12,6 +12,9 @@ from modules import processing as proc
 import systemd.daemon as daemon
 import yaml
 
+log = log.get_journal_logger("backup")
+config_yaml = "task.yml"
+
 """ Define signal handlers for SIGTERM, and SIGHUP(reload) """
 def sigterm_handler(_signo, _stack):
   daemon.notify('STOPPING=1')
@@ -22,9 +25,9 @@ def sigterm_handler(_signo, _stack):
 def reload_handler(_signo, _stack):
   daemon.notify('RELOADING=1')
 
-  proc.stop_processing()
+  #proc.stop_processing()
   # reload ini file, then task.yml file.
-  proc.start_processing()
+  #proc.start_processing()
 
   daemon.notify('READY=1')
 
@@ -33,8 +36,23 @@ if __name__ == '__main__':
   signal.signal(signal.SIGHUP, reload_handler) # SIGHUP is used as a reload signal for many daemons.
 
   daemon.notify('READY=1')
-  log = log.get_journal_logger("backup")
-  log.info("HELLO")
+
+  config = yaml.safe_load(""" 
+url: 'no'
+schedule: '*/5 * * * *'
+jobs:
+ - name: 'Syncing system configs' # Syncs configs to default location.
+   schedule: '0 */24 * * *'
+   targets:
+    - '/srv/'
+ 
+ - name: 'Sync cheese stash'
+   url: 'no'
+   targets: 
+    - '/home/niklas'
+  """)
+
+  proc.start_processing(config, log)
 
 
 
