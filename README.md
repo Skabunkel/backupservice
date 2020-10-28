@@ -27,7 +27,7 @@ This services will according to some schedule sync files to some backup solution
 Currently it feels like yaml will be a good choice because we want to use ansible, and this syntax would be related,
  and because ini files are shit for storing lists; it's a key value file format lets not get creative.
 
-*config.yml*
+*task.yml*
 ```yaml
 
 url: 'backup.lan' # if its not defined it will default to localhost
