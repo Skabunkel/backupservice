@@ -33,6 +33,7 @@ Currently it feels like yaml will be a good choice because we want to use ansibl
 url: 'backup.lan' # if its not defined it will default to localhost
 user: 'backup' # if its not defined it will default to current user using the $USER enviroment variable
 schedule: '*/30 * * * *'
+to: '/data/{hostname}' #if its not defined it will default to tmp if {hostname} is defined it will replace it with current hostname.
 jobs:
  - name: 'Syncing system configs' # Syncs configs to default location.
    schedule: '0 */24 * * *'
@@ -45,5 +46,11 @@ jobs:
    url: 'cheese.lan'
    targets:
     - '/home/wizard/cheese'
+
+ - name: 'Magic stash' # Syncs the 'Magic stash' to  a diffrent destination path.
+   to: '/magic/stash'
+   url: 'cheese.lan'
+   targets: 
+    - '/tmp/no'
 
 ```
