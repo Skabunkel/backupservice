@@ -6,10 +6,10 @@ import systemd.journal as journ
 
 def get_journal_logger(scope):
   logger = logging.getLogger(scope)
-  handler = logging.StreamHandler(sys.stdout)
-  handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-  #logger.addHandler(journ.JournalHandler())
-  logger.addHandler(handler)
+  logger.addHandler(journ.JournalHandler())
+#  handler = logging.StreamHandler(sys.stdout)
+#  handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+#  logger.addHandler(handler)
   logger.setLevel(logging.INFO)
   return logger
 

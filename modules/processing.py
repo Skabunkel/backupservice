@@ -7,11 +7,10 @@ import platform
 import urllib
 import subprocess
 
+""" 
+Reads the jobs from the task file.
+Then starts running then jobs forever.
 """
-I'm still thinking about this file, i'll get back to you.
-"""
-
-""" STUB WILL CHANGE """
 def start_processing(config, logger):
   if not isinstance(config, dict):
     raise Exception("invalid configuration provided.")
@@ -41,7 +40,6 @@ def start_processing(config, logger):
     url = config['url']
 
   for job_conf in config['jobs']:
-    #make_job(hostname, default_url, default_schedule, current_date, default_user, default_to, job):
     job = backupJobs.make_job(hostname, url, schedule, date, user, to, job_conf)
 
     if len(job.targets) != 0:

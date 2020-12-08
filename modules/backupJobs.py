@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 
 """ Represents a backup job. """
 class backup_job:
-  """  """
   name: str=field(compare=False)
   schedule: str=field(compare=False)
   url: str=field(compare=False)
