@@ -1,0 +1,20 @@
+--- 
+url: 'default'
+schedule: '* * * * *'
+to: /tmp/{hostname}/
+jobs:
+ - name: 'Syncing system configs' # Syncs configs to default location.
+   schedule: '* * * * *'
+   targets:
+    - '/srv/'
+ 
+ - name: 'Sync cheese stash'
+   url: 'cheese'
+   targets: 
+    - '/home/wizard'
+  
+ - name: 'Sync stash'
+   to: '/tmp/no'
+   url: 'stash'
+   targets: 
+    - '/tmp/no'
