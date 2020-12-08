@@ -51,7 +51,10 @@ def start_processing(config, logger):
 
   processor(taskqueue, logger)
 
-
+"""
+Starts processing of syncing data from source to destination.
+Syncs data from a host to another, this host expects to have access via ssh to the destination.
+"""
 def processor(queue, logger):
   if queue.empty():
     logger.error("No valid tasks where found.")
@@ -67,6 +70,10 @@ def processor(queue, logger):
     if time_left > 0:
       time.sleep(time_left)
 
+
+"""
+Syncs data from a host to another, this host expects to have access via ssh to the destination.
+"""
 def _sync(job, logger):
 
   user_host = f'{job.user}@{job.url}'
@@ -76,11 +83,15 @@ def _sync(job, logger):
     dest = target.strip('/')
     destination = f'{user_host}:{os.path.join(dest_root, dest)}'
     logger.info(f'syncing from:\"{target}\" to:\"{destination}\"')
-    #subprocess.call(['rsync', '-a', '--delete', source, destination])
-    logger.info(' '.join(['rsync', '-a', '--delete', source, destination]))
+    
+    proc = subprocess.run(['rsync', '-a', '--delete', source, destination],  shell=True)
+
+    if proc.returncode != 0:
+      logger.error(f'Job:\"{job.name}\" did not finish with a successfull error code, rescheduled for:\"{job.moveto_next()}\"')
+    else:
+      logger.info(f'Job:\"{job.name}\" is done, rescheduled for:\"{job.moveto_next()}\"')
+    #logger.info(' '.join(['rsync', '-a', '--delete', source, destination]))
     # something like this
     # rsync -a --delete from user@host:to
     # -a is for archive.
     # --delete sync file deletions to the target
-
-  logger.info(f'Job:\"{job.name}\" is done, rescheduled for:\"{job.moveto_next()}\"')
