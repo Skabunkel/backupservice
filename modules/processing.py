@@ -82,7 +82,7 @@ def _sync(job, logger):
     destination = f'{user_host}:{os.path.join(dest_root, dest)}'
     logger.info(f'syncing from:\"{target}\" to:\"{destination}\"')
     
-    proc = subprocess.run(['rsync', '-a', '--delete', source, destination],  shell=True)
+    proc = subprocess.run(['rsync', '-a', '--relative', '--delete', source, destination],  shell=True)
 
     if proc.returncode != 0:
       logger.error(f'Job:\"{job.name}\" did not finish with a successfull error code, rescheduled for:\"{job.moveto_next()}\"')
