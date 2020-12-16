@@ -78,8 +78,7 @@ def _sync(job, logger):
   dest_root = job.destination
   for target in job.targets:
     source = target
-    dest = target.strip('/')
-    destination = f'{user_host}:{os.path.join(dest_root, dest)}'
+    destination = f'{user_host}:{os.path.join(dest_root)}'
     logger.info(f'syncing from:\"{target}\" to:\"{destination}\"')
     
     proc = subprocess.run(['rsync', '-a', '--relative', '--delete', source, destination],  shell=True)
