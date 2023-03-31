@@ -78,14 +78,13 @@ def _sync(job, logger):
   dest_root = job.destination
   for target in job.targets:
     source = target
-    dest = target.strip('/')
-    destination = f'{user_host}:{os.path.join(dest_root, dest)}'
+    destination = f"{user_host}:/{dest_root.strip('/')}"
     logger.info(f'syncing from:\"{target}\" to:\"{destination}\"')
     
-    proc = subprocess.run(['rsync', '-a', '--delete', source, destination],  shell=True)
+    proc = subprocess.run(f"rsync -ar --relative --delete {source} {destination}",  shell=True, stderr=subprocess.PIPE)
 
     if proc.returncode != 0:
-      logger.error(f'Job:\"{job.name}\" did not finish with a successfull error code, rescheduled for:\"{job.moveto_next()}\"')
+      logger.error(f'Job:\"{job.name}\" did not finish with a successfull error code, rescheduled for:\"{job.moveto_next()}\" Error:\"{proc.stderr}\"')
     else:
       logger.info(f'Job:\"{job.name}\" is done, rescheduled for:\"{job.moveto_next()}\"')
     #logger.info(' '.join(['rsync', '-a', '--delete', source, destination]))
